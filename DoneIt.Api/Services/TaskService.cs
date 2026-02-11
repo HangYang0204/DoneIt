@@ -1,11 +1,11 @@
 using System.Text.Json;
-using DoneIt.Models;
+using DoneIt.Api.Models;
 
-namespace DoneIt.Services;
-public static class TaskService
+namespace DoneIt.Api.Services;
+public  class TaskService : ITaskService
 {
     private const string FilePath = "tasks.json";
-    public static List<TodoTask> Load()
+    public List<TodoTask> Load()
     {
         if (!File.Exists(FilePath))
         {
@@ -16,7 +16,7 @@ public static class TaskService
         return JsonSerializer.Deserialize<List<TodoTask>>(json) ?? new List<TodoTask>();
     }
 
-    public static void Save(List<TodoTask> tasks)
+    public void Save(List<TodoTask> tasks)
     {
         string json = JsonSerializer.Serialize(tasks, new JsonSerializerOptions { WriteIndented = true });
         File.WriteAllText(FilePath, json);

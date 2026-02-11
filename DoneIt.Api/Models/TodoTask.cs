@@ -1,4 +1,4 @@
-namespace DoneIt.Models;
+namespace DoneIt.Api.Models;
 
 public class TodoTask
 {
