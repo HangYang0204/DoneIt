@@ -43,13 +43,23 @@ app.MapRoute("list", (ITaskService taskService) =>
 
 app.MapRoute("learn",() =>
 {
-    var sentence = new Sentence();
-    System.Console.WriteLine(sentence[3]);
-    sentence[3] = "dog";
-    System.Console.WriteLine(sentence[3]);
+    //define a list of people
+    var People = new List<Person>
+    {
+        new Person { Name = "Elice", Age = 30 },
+        new Person { Name = "Cob", Age = 25 },
+        new Person { Name = "Aharlie", Age = 35 }
+    };
+    PersonService s = new PersonService();
+    //sort by name
+    s.SortPerson(People, (p1, p2) => string.Compare(p1.Name, p2.Name));
+    System.Console.WriteLine("Sorted by name:");
+    s.PrintPerson(People);
+    //sort by age
+    s.SortPerson(People, (p1, p2) => p1.Age.CompareTo(p2.Age));
+    System.Console.WriteLine("Sorted by age:");
+    s.PrintPerson(People);
 
-    System.Console.WriteLine(app.GetType().Name.ToString()); //Runtime
-    System.Console.WriteLine(typeof(CliApp).Name.ToString()); //Compile time
 });
 
 app.Run();
