@@ -1,6 +1,7 @@
 namespace DoneIt.Utils;
-
+using System.Collections.Generic;
 using DoneIt.Models;
+
 
 /// <summary>
 /// Extension methods for the <see cref="List{Person}"/> class.
@@ -22,6 +23,53 @@ public static class PeopleExtension
         foreach (var p in people)
         {
             System.Console.WriteLine(p.ToString());
+        }
+    }
+
+    public static void PrintAll<T>(this IEnumerable<T> people)
+    {
+        foreach (var p in people)
+        {
+            System.Console.WriteLine(p.ToString());
+        }
+    }
+    public static void PrintSorted<T>(this IEnumerable<T> people) where T : IComparable<T>
+    {
+        var sortedPeople = people.OrderBy(p => p).ToList();
+        foreach (var p in sortedPeople)
+        {
+            System.Console.WriteLine(p.ToString());
+        }
+    }
+
+    public static void PrintSortedBy<T>(this IEnumerable<T> people, Func<T, object> keySelector)
+    {
+        var sortedPeople = people.OrderBy(keySelector).ToList();
+        foreach (var p in sortedPeople)
+        {
+            System.Console.WriteLine(p.ToString());
+        }
+    }
+
+    //MyWhere class
+    public static IEnumerable<T> MyWhere<T>(this IEnumerable<T> source, Func<T, bool> predicate)
+    {
+        foreach (var item in source)
+        {
+            if (predicate(item))
+            {
+                yield return item;
+            }
+        }
+    }
+
+    //MySelect class
+    //Func<TSource, TResult> selector: a function that takes an element of type TSource and returns an element of type TResult.
+    public static IEnumerable<TResult> MySelect<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
+    {
+        foreach (var item in source)
+        {
+            yield return selector(item);
         }
     }
 }

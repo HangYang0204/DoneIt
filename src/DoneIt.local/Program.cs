@@ -56,14 +56,11 @@ app.MapRoute("learn",() =>
     People.PrintPeople();
 
     //use LINQ to filter people older than 30
-    var olderThan30 =   from p in People
-                        where p.Age > 30
-                        select p;
-
-    IEnumerable<Person> names = People.Where(p => p.Name.Contains("a"));
+    var olderThan30 = People.MyWhere(p => p.Age > 30);
+    var names = People.MySelect(p => p.Name);
     
     olderThan30.PrintPeople();
-    names.PrintPeople();
+    names.PrintAll();
 });
 
 app.Run();
