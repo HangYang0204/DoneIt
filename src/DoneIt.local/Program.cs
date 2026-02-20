@@ -2,6 +2,8 @@
 using System.Runtime.InteropServices;
 using DoneIt.Models;
 using DoneIt.Service;
+using System.Linq;
+using DoneIt.Utils;
 
 
 var builder = new CliAppBuilder();
@@ -50,16 +52,18 @@ app.MapRoute("learn",() =>
         new Person { Name = "Cob", Age = 25 },
         new Person { Name = "Aharlie", Age = 35 }
     };
-    PersonService s = new PersonService();
-    //sort by name
-    s.SortPerson(People, (p1, p2) => string.Compare(p1.Name, p2.Name));
-    System.Console.WriteLine("Sorted by name:");
-    s.PrintPerson(People);
-    //sort by age
-    s.SortPerson(People, (p1, p2) => p1.Age.CompareTo(p2.Age));
-    System.Console.WriteLine("Sorted by age:");
-    s.PrintPerson(People);
+    //print people using extension method
+    People.PrintPeople();
 
+    //use LINQ to filter people older than 30
+    var olderThan30 =   from p in People
+                        where p.Age > 30
+                        select p;
+
+    IEnumerable<Person> names = People.Where(p => p.Name.Contains("a"));
+    
+    olderThan30.PrintPeople();
+    names.PrintPeople();
 });
 
 app.Run();

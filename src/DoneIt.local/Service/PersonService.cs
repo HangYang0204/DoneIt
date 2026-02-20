@@ -10,8 +10,8 @@ class PersonService : IPersonService
         }
     }
 
-    public void SortPerson(List<Person> people, Comparison<Person> comparison)
+    public void SortPerson(List<Person> Lpeople, Comparison<Person> comparison)
     {
-        people.Sort(comparison);
+        Lpeople.Sort(comparison);
     }
 }
