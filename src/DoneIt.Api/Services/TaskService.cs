@@ -4,21 +4,34 @@ using DoneIt.Api.Models;
 namespace DoneIt.Api.Services;
 public  class TaskService : ITaskService
 {
-    private const string FilePath = "tasks.json";
-    public List<TodoTask> Load()
-    {
-        if (!File.Exists(FilePath))
-        {
-            return new List<TodoTask>();
-        }
+    private readonly AppDbContext _dbContext;
 
-        string json = File.ReadAllText(FilePath);
-        return JsonSerializer.Deserialize<List<TodoTask>>(json) ?? new List<TodoTask>();
+    public TaskService(AppDbContext dbContext)
+    {
+        _dbContext = dbContext;
     }
-
-    public void Save(List<TodoTask> tasks)
+    public List<TodoTask> GetAll() => _dbContext.Tasks.ToList();
+    public void Add(TodoTask task)
     {
-        string json = JsonSerializer.Serialize(tasks, new JsonSerializerOptions { WriteIndented = true });
-        File.WriteAllText(FilePath, json);
+        _dbContext.Tasks.Add(task);
+        _dbContext.SaveChanges();
+    }
+    public void Update(TodoTask task)
+    {
+        var existingTask = _dbContext.Tasks.FirstOrDefault(t => t.Description == task.Description);
+        if (existingTask != null)
+        {
+            existingTask.IsDone = task.IsDone;
+            _dbContext.SaveChanges();
+        }
+    }
+    public void Delete(string description)
+    {
+        var task = _dbContext.Tasks.FirstOrDefault(t => t.Description == description);
+        if (task != null)
+        {
+            _dbContext.Tasks.Remove(task);
+            _dbContext.SaveChanges();
+        }
     }
 }

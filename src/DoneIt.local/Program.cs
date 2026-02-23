@@ -4,10 +4,15 @@ using DoneIt.Models;
 using DoneIt.Service;
 using System.Linq;
 using DoneIt.Utils;
+using Microsoft.Extensions.Options;
 
 
 var builder = new CliAppBuilder();
 builder.AddSingleton<ITaskService, TaskService>();
+
+//Sql
+builder.Services.AddDbContext<AppDbContext>(Options => 
+    Options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=DoneItDb;Trusted_Connection=True;MultipleActiveResultSets=true"));
 
 var app = builder.Build();
 
