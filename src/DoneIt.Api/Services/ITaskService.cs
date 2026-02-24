@@ -6,8 +6,8 @@ using DoneIt.Api.Models;
 public interface ITaskService
 {
     //CURD operations for tasks
-    List<TodoTask> GetAll();
-    void Add(TodoTask task);
-    void Update(TodoTask task);
-    void Delete(string description);
+    Task<List<TodoTask>> GetAllAsync();
+    Task AddAsync(TodoTask task);
+    Task UpdateAsync(TodoTask task);
+    Task DeleteAsync(string description);
 }

@@ -21,15 +21,20 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.MapGet("/tasks", (ITaskService taskService) => Results.Ok(taskService.GetAll()));
+app.MapGet("/tasks", async (ITaskService taskService) => Results.Ok(await taskService.GetAllAsync()));
 
-app.MapPost("/tasks", (TodoTask newTask, ITaskService taskService) => {
-    taskService.Add(newTask);
+app.MapPost("/tasks", async (TodoTask newTask, ITaskService taskService) => {
+    await taskService.AddAsync(newTask);
     return Results.Created($"/tasks/{newTask.Description}", newTask);
 });
 
-app.MapDelete("/tasks/{description}", (string description, ITaskService taskService) => {
-    taskService.Delete(description);
+app.MapPut("/tasks", async (TodoTask updatedTask, ITaskService taskService) => {
+    await taskService.UpdateAsync(updatedTask);
+    return Results.NoContent();
+});
+
+app.MapDelete("/tasks/{description}", async (string description, ITaskService taskService) => {
+    await taskService.DeleteAsync(description);
     return Results.NoContent();
 });
 

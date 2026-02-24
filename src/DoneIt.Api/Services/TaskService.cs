@@ -1,5 +1,6 @@
 using System.Text.Json;
 using DoneIt.Api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DoneIt.Api.Services;
 public  class TaskService : ITaskService
@@ -10,28 +11,28 @@ public  class TaskService : ITaskService
     {
         _dbContext = dbContext;
     }
-    public List<TodoTask> GetAll() => _dbContext.Tasks.ToList();
-    public void Add(TodoTask task)
+    public async Task<List<TodoTask>> GetAllAsync() => await _dbContext.Tasks.ToListAsync();
+    public async Task AddAsync(TodoTask task)
     {
-        _dbContext.Tasks.Add(task);
-        _dbContext.SaveChanges();
+        _dbContext.Tasks.Add(task); //should not use async 
+        await _dbContext.SaveChangesAsync();
     }
-    public void Update(TodoTask task)
+    public async Task UpdateAsync(TodoTask task)
     {
         var existingTask = _dbContext.Tasks.FirstOrDefault(t => t.Description == task.Description);
         if (existingTask != null)
         {
             existingTask.IsDone = task.IsDone;
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
     }
-    public void Delete(string description)
+    public async Task DeleteAsync(string description)
     {
         var task = _dbContext.Tasks.FirstOrDefault(t => t.Description == description);
         if (task != null)
         {
             _dbContext.Tasks.Remove(task);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
     }
 }
