@@ -72,4 +72,36 @@ public static class PeopleExtension
             yield return selector(item);
         }
     }
+
+    //Most frequent letter in a sentence
+    public static List<char> MostFrequentLetters(this string sentence)
+    {
+        int[] frequency = new int[26];
+        int max = 0;
+        foreach(char c in sentence)
+        {
+            if (char.IsLetter(c))
+            {
+                char LowerC = char.ToLower(c);
+                frequency[LowerC - 'a']++;
+                if (frequency[LowerC - 'a'] > max)                
+                {
+                    max = frequency[LowerC - 'a'];
+                }
+            }
+        }
+        if(max == 0)
+        {
+            return new List<char>();
+        }
+        List<char> mostFrequentLetters = new List<char>();
+        for(int i = 0; i < frequency.Length; i++)
+        {
+            if(frequency[i] == max)
+            {
+                mostFrequentLetters.Add((char)('a' + i));
+            }
+        }
+        return mostFrequentLetters;
+    }
 }

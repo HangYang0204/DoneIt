@@ -10,9 +10,6 @@ using Microsoft.Extensions.Options;
 var builder = new CliAppBuilder();
 builder.AddSingleton<ITaskService, TaskService>();
 
-//Sql
-builder.Services.AddDbContext<AppDbContext>(Options => 
-    Options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=DoneItDb;Trusted_Connection=True;MultipleActiveResultSets=true"));
 
 var app = builder.Build();
 
@@ -48,24 +45,19 @@ app.MapRoute("list", (ITaskService taskService) =>
 });
 
 
-app.MapRoute("learn",() =>
+app.MapRoute("Main",() =>
 {
-    //define a list of people
-    var People = new List<Person>
+    // frequency array for letters a-z
+    string sentence = "mama mama and papa are here";
+    var mostFrequentLetters = sentence.MostFrequentLetters(); //Compile does this for you : PeopleExtension.MostFrequentLetters(sentence);
+    if(mostFrequentLetters.Any())
     {
-        new Person { Name = "Elice", Age = 30 },
-        new Person { Name = "Cob", Age = 25 },
-        new Person { Name = "Aharlie", Age = 35 }
-    };
-    //print people using extension method
-    People.PrintPeople();
-
-    //use LINQ to filter people older than 30
-    var olderThan30 = People.MyWhere(p => p.Age > 30);
-    var names = People.MySelect(p => p.Name);
-    
-    olderThan30.PrintPeople();
-    names.PrintAll();
+        Console.WriteLine($"Most frequent letter(s) in the sentence: {string.Join(", ", mostFrequentLetters)}");
+    }
+    else
+    {
+        Console.WriteLine("No letters found in the sentence.");
+    }
 });
 
 app.Run();
