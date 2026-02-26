@@ -104,4 +104,34 @@ public static class PeopleExtension
         }
         return mostFrequentLetters;
     }
+
+    public static bool PermutationIdentical(this string str1, string str2)
+    {
+        if (str1.Length != str2.Length)
+        {
+            return false;
+        }
+        //first pass to populate the frequency array
+        int[] frequency = new int[26];
+        foreach (char c in str2)
+        {
+            if (char.IsLetter(c))
+            {
+                frequency[char.ToLower(c) - 'a']++;
+            }
+        }
+        //second pass to check the frequency of each char in str1
+        foreach (char c in str1)
+        {
+            if (char.IsLetter(c))
+            {
+                if (frequency[char.ToLower(c) - 'a'] == 0)
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 }

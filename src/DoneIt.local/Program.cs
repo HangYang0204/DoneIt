@@ -47,17 +47,22 @@ app.MapRoute("list", (ITaskService taskService) =>
 
 app.MapRoute("Main",() =>
 {
-    // frequency array for letters a-z
-    string sentence = "mama mama and papa are here";
-    var mostFrequentLetters = sentence.MostFrequentLetters(); //Compile does this for you : PeopleExtension.MostFrequentLetters(sentence);
-    if(mostFrequentLetters.Any())
+/*Q1 solution*/
+    string Str1 = "abc";
+    string Str2 = "eidbacooo";
+
+    //two fixed lentgh window i,j
+    for(int i = 0; i < Str2.Length - Str1.Length + 1; i++)
     {
-        Console.WriteLine($"Most frequent letter(s) in the sentence: {string.Join(", ", mostFrequentLetters)}");
+        string subStr = Str2.Substring(i, Str1.Length);
+        if (subStr.PermutationIdentical(Str1))
+        {
+            Console.WriteLine("True");
+            return;
+        }
     }
-    else
-    {
-        Console.WriteLine("No letters found in the sentence.");
-    }
+    Console.WriteLine("False");
+
 });
 
 app.Run();
